@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   CSS ADICIONALES PARA TECHSTORE PRO
+   Agregar al final de tu input.css
+============================================= */
+
+/* Animaciones del carrito */
+@keyframes cartBounce {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+    }
+    50% { 
+        transform: translateY(-3px) rotate(2deg); 
+    }
+}
+
+@keyframes cartPulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    50% { 
+        opacity: 0.9; 
+        transform: scale(1.05);
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0);
+    }
+}
+
+@keyframes slideIn {
+    0% { 
+        opacity: 0; 
+        transform: translateX(-20px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateX(0); 
+    }
+}
+
+@keyframes fadeIn {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.9); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+@keyframes spin {
+    0% { 
+        transform: translate(-50%, -50%) rotate(0deg); 
+    }
+    100% { 
+        transform: translate(-50%, -50%) rotate(360deg); 
+    }
+}
+
+/* Clases de utilidad */
+.cart-icon:hover {
+    animation: cartBounce 0.6s ease-in-out;
+}
+
+.cart-counter-pulse {
+    animation: cartPulse 2s infinite;
+}
+
+.cart-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+.cart-summary {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Efectos hover mejorados */
+.product-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.quantity-button:hover {
+    transform: scale(1.1);
+}
+
+.quantity-button:active {
+    transform: scale(0.95);
+}
+
+/* Estados de loading */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Notificaciones mejoradas */
+.cart-notification {
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Efectos de navegación */
+.nav-underline {
+    position: relative;
+}
+
+.nav-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+    transition: width 0.3s ease;
+}
+
+.nav-underline:hover::after {
+    width: 100%;
+}
+
+/* Mejoras para mobile */
+@media (max-width: 768px) {
+    .cart-icon {
+        padding: 8px;
+    }
+    
+    .product-hover:hover {
+        transform: translateY(-2px);
+    }
+    
+    .quantity-button:hover {
+        transform: scale(1.05);
+    }
+}
+
+/* Dark mode support (para futuras mejoras) */
+@media (prefers-color-scheme: dark) {
+    .cart-notification {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Animaciones personalizadas adicionales */
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1); 
+    }
+}
+
+.animate-pulse-custom {
+    animation: pulse 2s infinite;
+}
+
+/* Transiciones suaves para todos los elementos interactivos */
+button, a, input, select, textarea {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Mejoras de accesibilidad */
+.focus-visible:focus {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+}
+
+/* Efectos de loading más suaves */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Efectos adicionales para botones */
+.btn-gradient {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #EC4899);
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}

@@ -1,0 +1,47 @@
+
+header {
+    background: linear-gradient( rgb(11, 2, 34), rgb(39, 17, 139), rgb(2, 2, 37));
+
+}
+
+.carrusel {
+  background: linear-gradient(to left, #18045b,#39054e,#251149, #1e117e);
+    position: relative;
+    width: 80%; /* Ajusta el ancho según sea necesario */
+    margin: auto;
+    overflow: hidden; /* Oculta las imágenes que están fuera del contenedor */
+    border-radius: 30px;
+}
+
+.botones {
+    background: linear-gradient(to left, #700a7c,#39054e,#251149, #1c09b1);
+    border: 2px solid #ffffff; /* Borde blanco */
+    color: white;
+    
+    
+}
+.botones:hover {
+    background: linear-gradient(to left, #39054e,#251149, #1c09b1);
+    border: 2px solid #ffffff; /* Borde blanco */
+    color: white;
+    transform: scale(1.05); /* Aumenta el tamaño ligeramente */
+    transition: transform 0.3s ease; /* Suaviza la transición */
+    background-color: white;
+} 
+.carrusel-container {
+  height: 150px; /* Ejemplo: Define una altura fija para el carrusel */
+  width: 900px;  /* Ejemplo: Define un ancho para el carrusel */
+  overflow: hidden;
+}
+
+.carrusel-inner {
+  display: flex; /* Permite que las imágenes se coloquen en línea */
+  height: 100%; /* El contenedor interno debe tener la misma altura que el padre */
+}
+
+.carru {
+  width: 100px;  /* Las imágenes ocupan todo el ancho del carrusel */
+  height: 160px; /* ¡Ahora esta propiedad funciona! La imagen ocupa el 100% de la altura de .carrusel-inner */
+ /* Recorta la imagen para que llene el espacio sin distorsionarse */
+  flex-shrink: 0;
+}
