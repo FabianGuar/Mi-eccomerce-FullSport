@@ -69,3 +69,8 @@ Desktop.ini
 tmp/
 temp/
 ```
+
+# Logs
+logs/
+*.log
+npm-debug.log*

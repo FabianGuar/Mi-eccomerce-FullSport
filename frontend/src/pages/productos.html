@@ -487,50 +487,11 @@
     </footer>
 
     <!-- SCRIPTS -->
-    <script src="../scripts/productos-navegacion.js"></script>
-    <script src="../scripts/product-url-handler.js"></script> 
+    <script src="../scripts/api.js"></script>
     <script src="../scripts/carrito.js"></script>
+    <script src="../scripts/productos-api.js"></script>
+    
     <script src="../scripts/productos-filtros-v2.js"></script>
-        
-    <!-- Botones de producto - SIMPLIFICADO -->
-<script>
-    setTimeout(function() {
-        // Botones "Comprar" 
-        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const product = {
-                    id: this.dataset.id,
-                    name: this.dataset.product,
-                    price: parseInt(this.dataset.price),
-                    quantity: 1,
-                    image: this.closest('.product-card').querySelector('img')?.src || '📦'
-                };
-                
-                // Efecto visual
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-                
-                // Agregar al carrito
-                if (window.addToCart) {
-                    window.addToCart(product);
-                }
-            });
-        });
-        
-        // Botones "Ver Detalles"
-        document.querySelectorAll('.ver-detalles-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const productId = this.getAttribute('data-product-id');
-                window.location.href = `producto-detalle.html?id=${productId}`;
-            });
-        });
-        
-        console.log('✅ Botones inicializados v2.0');
-    }, 1500);
-</script>
+    
 </body>
 </html>

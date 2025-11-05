@@ -1,0 +1,60 @@
+{success: true, user: {…}, token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Z…YxN30.2BAml2BTWu4C_DsRU5meVNoSjuzf-rzuTE0d7hjpF24', message: 'Usuario registrado exitosamente'}
+message
+: 
+"Usuario registrado exitosamente"
+success
+: 
+true
+token
+: 
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjY5NTk4YzRiYmE4MzViNTcyYzRmMiIsImVtYWlsIjoidGVzdC0xNzYwOTkwNjEzOTY2QHRlY2hzdG9yZS5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjA5OTA2MTcsImV4cCI6MTc2MzU4MjYxN30.2BAml2BTWu4C_DsRU5meVNoSjuzf-rzuTE0d7hjpF24"
+user
+: 
+address
+: 
+{country: 'Colombia'}
+createdAt
+: 
+"2025-10-20T20:03:36.835Z"
+customerLevel
+: 
+"bronze"
+email
+: 
+"test-1760990613966@techstore.com"
+firstName
+: 
+"Test"
+formattedTotalSpent
+: 
+"$ 0"
+fullName
+: 
+"Test Usuario"
+id
+: 
+"68f69598c4bba835b572c4f2"
+isActive
+: 
+true
+isEmailVerified
+: 
+false
+lastName
+: 
+"Usuario"
+loyaltyPoints
+: 
+0
+phone
+: 
+"3001234567"
+role
+: 
+"customer"
+totalOrders
+: 
+0
+totalSpent
+: 
+0
