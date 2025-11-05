@@ -1,13 +1,14 @@
+
 {
     "success": true,
-    "message": "Usuario registrado exitosamente",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjAwOGM4MDA1MmI2ZTQzMWU2NDUyYyIsImVtYWlsIjoiYWRtaW5AdGVjaHN0b3JlLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MDU2MTM1MywiZXhwIjoxNzYzMTUzMzUzfQ.YU00Y687O3R4BEaUcwaa83j2_z7mzhlMP9Uq8dNGJ58",
+    "message": "Login exitoso",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDI0ZmMxODQ3ZDNjNGEwMTU3ZjZmZSIsImVtYWlsIjoiYWRtaW4yQHRlY2hzdG9yZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjE3NjM3NDYsImV4cCI6MTc2NDM1NTc0Nn0._HSRfvbjn6Ic_xnAAl1m7HYO9_cWYoQ3NRFnE0eMieg",
     "user": {
-        "id": "68f008c80052b6e431e6452c",
+        "id": "69024fc1847d3c4a0157f6fe",
         "firstName": "Admin",
         "lastName": "TechStore",
         "fullName": "Admin TechStore",
-        "email": "admin@techstore.com",
+        "email": "admin2@techstore.com",
         "role": "admin",
         "phone": "3001234567",
         "address": {
@@ -20,6 +21,6 @@
         "totalSpent": 0,
         "formattedTotalSpent": "$ 0",
         "loyaltyPoints": 0,
-        "createdAt": "2025-10-15T20:49:12.760Z"
+        "createdAt": "2025-10-29T17:32:49.839Z"
     }
 }

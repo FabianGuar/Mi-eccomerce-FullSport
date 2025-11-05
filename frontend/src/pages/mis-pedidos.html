@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- ========================================== -->
+    <!-- CONFIGURACIÓN BÁSICA -->
+    <!-- ========================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ========================================== -->
+    <!-- SEO -->
+    <!-- ========================================== -->
+    <title>Mis Pedidos - TechStore Pro</title>
+    <meta name="description" content="Historial de pedidos en TechStore Pro - Ve todos tus pedidos, estados y detalles">
+    
+    <!-- ========================================== -->
+    <!-- ESTILOS EXTERNOS -->
+    <!-- ========================================== -->
+    
+    <!-- TailwindCSS Local -->
+    <link href="../styles/output.css" rel="stylesheet">
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- ========================================== -->
+    <!-- ESTILOS PERSONALIZADOS -->
+    <!-- ========================================== -->
+    <style>
+        /* Animación de entrada suave */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Efecto hover en tarjetas de pedidos */
+        .order-card {
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Animación del badge de estado */
+        .status-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<link rel="icon" href="data:,">
+
+<body class="bg-gray-50 font-sans min-h-screen">
+
+    <!-- ========================================== -->
+    <!-- HEADER CON NAVEGACIÓN Y MENÚ DE USUARIO -->
+    <!-- ========================================== -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                
+                <!-- ========================================== -->
+                <!-- LOGO Y NOMBRE -->
+                <!-- ========================================== -->
+                <div class="flex items-center">
+                    <!-- Logo con gradiente -->
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-2 rounded-lg mr-3">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Nombre de la tienda -->
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        <a href="index.html">TechStore Pro</a>
+                    </h1>
+                </div>
+                
+                <!-- ========================================== -->
+                <!-- MENÚ DESKTOP -->
+                <!-- ========================================== -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                        Inicio
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                    </a>
+                    <a href="productos.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                        Productos
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                    </a>
+                    <a href="contacto.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                        Contacto
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                    </a>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- CARRITO Y MENÚ DE USUARIO -->
+                <!-- ========================================== -->
+                <div class="flex items-center space-x-4">
+                    
+                    <!-- ========================================== -->
+                    <!-- CARRITO CON FONT AWESOME (MEJORADO) -->
+                    <!-- ========================================== -->
+                    <a href="carrito.html" class="relative group">
+                        <div class="relative p-3 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 group-hover:from-blue-100 group-hover:to-indigo-100 transition-all duration-300 transform group-hover:scale-110 group-hover:shadow-lg">
+                            <!-- Icono de Font Awesome -->
+                            <i class="fas fa-shopping-cart text-xl text-blue-600 group-hover:text-indigo-600 transition-colors duration-300"></i>
+                            
+                            <!-- Contador con animación - AGRANDADO -->
+                            <span id="cart-counter" class="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-sm font-bold rounded-full min-w-[28px] h-[28px] flex items-center justify-center px-2 shadow-lg border-3 border-white transform transition-transform group-hover:scale-110" style="display: none; font-size: 14px;">
+                                0
+                            </span>
+                            
+                            <!-- Indicador de hover -->
+                            <div class="absolute inset-0 rounded-xl bg-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        </div>
+                    </a>
+
+                    <!-- ========================================== -->
+                    <!-- MENÚ DE USUARIO (cuando está logueado) -->
+                    <!-- ========================================== -->
+                    <div id="user-menu-container" style="display: none;" class="relative">
+                        <!-- Botón que abre el dropdown -->
+                        <button id="user-menu-button" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                            <!-- Avatar con iniciales -->
+                            <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                <span id="user-initials">U</span>
+                            </div>
+                            <!-- Nombre del usuario -->
+                            <span id="user-name" class="font-medium hidden md:inline">Usuario</span>
+                            <!-- Flecha hacia abajo -->
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- ========================================== -->
+                        <!-- DROPDOWN MENU (se muestra/oculta) -->
+                        <!-- ========================================== -->
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-[9999]" style="position: absolute; right: 0;">
+                            
+                            <!-- Información del usuario -->
+                            <div class="p-4 border-b border-gray-200">
+                                <p id="dropdown-user-name" class="font-semibold text-gray-800">Usuario</p>
+                                <p id="dropdown-user-email" class="text-sm text-gray-600">email@example.com</p>
+                                <span id="dropdown-user-role" class="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium">👤 Cliente</span>
+                            </div>
+                            
+                            <!-- Opciones de Admin (solo visible para admin) -->
+                            <div id="admin-options" style="display: none;">
+                                <a href="dashboard.html" class="block px-4 py-3 text-gray-700 hover:bg-yellow-50 transition-colors">
+                                    <span class="mr-2">🔧</span>
+                                    Dashboard Admin
+                                </a>
+                            </div>
+                            
+                            <!-- Opciones comunes -->
+                            <a href="perfil.html" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors">
+                                <span class="mr-2">👤</span>
+                                Mi Perfil
+                            </a>
+                            <a href="mis-pedidos.html" class="block px-4 py-3 text-blue-600 bg-blue-50 font-medium">
+                                <span class="mr-2">📦</span>
+                                Mis Pedidos
+                            </a>
+                            
+                            <hr class="my-1 border-gray-200">
+                            
+                            <!-- Botón de logout -->
+                            <a href="#" id="logout-button" class="block px-4 py-3 text-red-600 hover:bg-red-50 transition-colors font-medium">
+                                <span class="mr-2">🚪</span>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- BOTONES DE AUTH (cuando NO está logueado) -->
+                    <!-- ========================================== -->
+                    <div id="auth-buttons" class="flex items-center space-x-3">
+                        <a href="login.html" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">
+                            Login
+                        </a>
+                        <a href="register.html" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200">
+                            Registrarse
+                        </a>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- BOTÓN MENÚ MÓVIL -->
+                    <!-- ========================================== -->
+                    <button id="mobile-menu-button" class="md:hidden text-gray-700 hover:text-blue-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- MENÚ MÓVIL (expandible) -->
+            <!-- ========================================== -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600">Inicio</a>
+                <a href="productos.html" class="block py-2 text-gray-700 hover:text-blue-600">Productos</a>
+                <a href="contacto.html" class="block py-2 text-gray-700 hover:text-blue-600">Contacto</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================== -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- ========================================== -->
+        <!-- ENCABEZADO DE LA PÁGINA -->
+        <!-- ========================================== -->
+        <div class="mb-8 animate-fade-in">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                📦 Mis Pedidos
+            </h1>
+            <p class="text-gray-600">
+                Aquí puedes ver el historial de todos tus pedidos
+            </p>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TARJETAS DE ESTADÍSTICAS -->
+        <!-- ========================================== -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 animate-fade-in">
+            
+            <!-- ========================================== -->
+            <!-- TARJETA 1: TOTAL DE PEDIDOS -->
+            <!-- ========================================== -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Total Pedidos</p>
+                        <p id="total-orders" class="text-3xl font-bold">0</p>
+                    </div>
+                    <!-- Icono grande de fondo -->
+                    <i class="fas fa-shopping-bag text-4xl opacity-50"></i>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TARJETA 2: PEDIDOS PENDIENTES -->
+            <!-- ========================================== -->
+            <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Pendientes</p>
+                        <p id="pending-orders" class="text-3xl font-bold">0</p>
+                    </div>
+                    <i class="fas fa-clock text-4xl opacity-50"></i>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TARJETA 3: PEDIDOS COMPLETADOS -->
+            <!-- ========================================== -->
+            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Completados</p>
+                        <p id="completed-orders" class="text-3xl font-bold">0</p>
+                    </div>
+                    <i class="fas fa-check-circle text-4xl opacity-50"></i>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TARJETA 4: TOTAL GASTADO -->
+            <!-- ========================================== -->
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm opacity-90">Total Gastado</p>
+                        <p id="total-spent" class="text-3xl font-bold">$0</p>
+                    </div>
+                    <i class="fas fa-dollar-sign text-4xl opacity-50"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- LISTA DE PEDIDOS -->
+        <!-- ========================================== -->
+        <div id="orders-container" class="space-y-6">
+            <!-- Los pedidos se cargarán aquí dinámicamente con JavaScript -->
+            
+            <!-- ========================================== -->
+            <!-- LOADING STATE (mientras carga) -->
+            <!-- ========================================== -->
+            <div class="text-center py-12">
+                <div class="spinner inline-block mb-4"></div>
+                <p class="text-gray-600">Cargando pedidos...</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ESTADO VACÍO (si no hay pedidos) -->
+        <!-- ========================================== -->
+        <div id="empty-state" class="hidden text-center py-16">
+            <div class="max-w-md mx-auto">
+                <!-- Emoji grande -->
+                <div class="text-8xl mb-4">📦</div>
+                
+                <!-- Mensaje -->
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">
+                    No tienes pedidos todavía
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    ¡Comienza a comprar en nuestra tienda!
+                </p>
+                
+                <!-- Botón call-to-action -->
+                <a href="productos.html" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                    Ver Productos
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- FOOTER -->
+    <!-- ========================================== -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 TechStore Pro. Todos los derechos reservados.</p>
+            <p class="text-sm text-gray-400 mt-2">
+                Tu tienda de tecnología de confianza
+            </p>
+        </div>
+    </footer>
+
+
+    <script src="../scripts/auth-api.js"></script>
+    <script src="../scripts/carrito.js"></script>
+    <script src="../scripts/session.js"></script>
+    <script>
+    // =============================================
+// HEADER DINÁMICO - INICIALIZACIÓN
+// =============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎨 Inicializando header dinámico...');
+    
+    // Elementos del DOM
+    const userMenuContainer = document.getElementById('user-menu-container');
+    const authButtons = document.getElementById('auth-buttons');
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userDropdown = document.getElementById('user-dropdown');
+    const logoutButton = document.getElementById('logout-button');
+    const adminOptions = document.getElementById('admin-options');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // =============================================
+    // FUNCIÓN: ACTUALIZAR HEADER SEGÚN AUTENTICACIÓN
+    // =============================================
+    
+    function updateHeader() {
+        console.log('🔄 Actualizando header...');
+        
+        // Verificar si el usuario está autenticado
+        const isAuthenticated = authAPI && authAPI.isAuthenticated();
+        
+        if (isAuthenticated) {
+            // Usuario logueado - Mostrar menú de usuario
+            const user = authAPI.getUser();
+            
+            if (user) {
+                console.log('✅ Usuario logueado:', user.email);
+                
+                // Ocultar botones de login/register
+                if (authButtons) authButtons.style.display = 'none';
+                
+                // Mostrar menú de usuario
+                if (userMenuContainer) userMenuContainer.style.display = 'block';
+                
+                // Actualizar información del usuario
+                const initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+                const fullName = `${user.firstName} ${user.lastName}`;
+                
+                // Iniciales en el botón
+                const userInitials = document.getElementById('user-initials');
+                if (userInitials) userInitials.textContent = initials;
+                
+                // Nombre en el botón
+                const userName = document.getElementById('user-name');
+                if (userName) userName.textContent = user.firstName;
+                
+                // Info en el dropdown
+                const dropdownUserName = document.getElementById('dropdown-user-name');
+                if (dropdownUserName) dropdownUserName.textContent = fullName;
+                
+                const dropdownUserEmail = document.getElementById('dropdown-user-email');
+                if (dropdownUserEmail) dropdownUserEmail.textContent = user.email;
+                
+                const dropdownUserRole = document.getElementById('dropdown-user-role');
+                if (dropdownUserRole) {
+                    if (user.role === 'admin') {
+                        dropdownUserRole.textContent = '🔧 Administrador';
+                        dropdownUserRole.className = 'inline-block mt-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full font-medium';
+                        
+                        // Mostrar opciones de admin
+                        if (adminOptions) adminOptions.style.display = 'block';
+                    } else {
+                        dropdownUserRole.textContent = '👤 Cliente';
+                        dropdownUserRole.className = 'inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium';
+                        
+                        // Ocultar opciones de admin
+                        if (adminOptions) adminOptions.style.display = 'none';
+                    }
+                }
+                
+                console.log('✅ Header actualizado para usuario logueado');
+            }
+        } else {
+            // Usuario NO logueado - Mostrar botones de login/register
+            console.log('ℹ️ Usuario no autenticado');
+            
+            if (userMenuContainer) userMenuContainer.style.display = 'none';
+            if (authButtons) authButtons.style.display = 'flex';
+            
+            console.log('✅ Header actualizado para usuario no logueado');
+        }
+    }
+
+    // =============================================
+    // TOGGLE DEL DROPDOWN
+    // =============================================
+    
+    if (userMenuButton && userDropdown) {
+        userMenuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('hidden');
+        });
+
+        // Cerrar dropdown al hacer click fuera
+        document.addEventListener('click', function(e) {
+            if (!userMenuContainer.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+    }
+
+    // =============================================
+    // LOGOUT
+    // =============================================
+    
+     if (logoutButton) {
+    logoutButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('🚪 Cerrando sesión...');
+        authAPI.logout();
+        window.location.reload();
+    });
+}
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // =============================================
+    // INICIALIZAR HEADER
+    // =============================================
+    
+    // Pequeño delay para asegurar que authAPI esté listo
+    setTimeout(() => {
+        updateHeader();
+    }, 100);
+    
+    console.log('✅ Header dinámico inicializado');
+});
+</script>
+
+    <!-- ========================================== -->
+<!-- SCRIPT DE MIS PEDIDOS -->
+<!-- ========================================== -->
+<script>
+    console.log('📦 Inicializando página de pedidos...');
+
+    // ========================================
+    // 1. VERIFICACIÓN DE AUTENTICACIÓN
+    // ========================================
+    async function initializePage() {
+        try {
+            // ✅ Verificar si el usuario está autenticado
+            const isAuthenticated = authAPI.isAuthenticated();
+            
+            if (!isAuthenticated) {
+                console.warn('⚠️ Usuario no autenticado');
+                window.location.href = '../pages/login.html';
+                return;
+            }
+
+            // ✅ Obtener datos del usuario
+            const user = authAPI.getUser();
+            console.log('✅ Usuario autenticado:', user.email);
+
+            // ✅ Cargar los pedidos
+            await loadOrders();
+
+        } catch (error) {
+            console.error('❌ Error inicializando página:', error);
+            showErrorMessage('Error al cargar la página. Por favor, recarga.');
+        }
+    }
+
+    // ========================================
+    // 2. CARGAR PEDIDOS DEL BACKEND
+    // ========================================
+    async function loadOrders() {
+        try {
+            console.log('🔄 Haciendo request al backend...');
+            console.log('URL: http://localhost:5000/api/orders/my-orders');
+
+            // ✅ IMPORTANTE: Obtener el token correctamente
+            const token = authAPI.getToken();
+
+            if (!token) {
+                throw new Error('No se encontró token de autenticación');
+            }
+
+            // ✅ Hacer la petición al backend
+            const response = await fetch('http://localhost:5000/api/orders/my-orders', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            console.log('📡 Response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+
+            // ✅ Procesar los datos
+            const data = await response.json();
+            console.log('📦 Datos recibidos:', data);
+
+            // ✅ El backend puede devolver los pedidos de diferentes formas
+            const orders = data.data || data.orders || [];
+
+            // ✅ Renderizar los pedidos
+            renderOrders(orders);
+
+            // ✅ Actualizar las estadísticas
+            updateStatistics(orders);
+
+        } catch (error) {
+            console.error('❌ Error al cargar pedidos:', error);
+            showErrorMessage('No se pudieron cargar los pedidos. Por favor, intenta de nuevo.');
+        }
+    }
+
+    // ========================================
+    // 3. RENDERIZAR PEDIDOS EN EL DOM
+    // ========================================
+    function renderOrders(orders) {
+        const ordersContainer = document.getElementById('orders-container');
+        
+        if (!ordersContainer) {
+            console.error('❌ No se encontró el contenedor de pedidos');
+            return;
+        }
+
+        // ✅ Si no hay pedidos
+        if (orders.length === 0) {
+            ordersContainer.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <svg class="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">
+                        Aún no has realizado ningún pedido
+                    </h3>
+                    <p class="text-gray-500 mb-6">
+                        Explora nuestro catálogo y realiza tu primera compra
+                    </p>
+                    <a href="../pages/productos.html" 
+                       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                        Ir a Productos
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        // ✅ Renderizar cada pedido
+        ordersContainer.innerHTML = orders.map(order => createOrderCard(order)).join('');
+    }
+
+    // ========================================
+    // 4. CREAR TARJETA DE PEDIDO
+    // ========================================
+    function createOrderCard(order) {
+        // ✅ Formatear fecha
+        const orderDate = new Date(order.createdAt).toLocaleDateString('es-CO', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // ✅ Obtener color según el estado
+        const statusColors = {
+            'pending': 'bg-yellow-100 text-yellow-800',
+            'processing': 'bg-blue-100 text-blue-800',
+            'shipped': 'bg-purple-100 text-purple-800',
+            'delivered': 'bg-green-100 text-green-800',
+            'cancelled': 'bg-red-100 text-red-800'
+        };
+
+        const statusTexts = {
+            'pending': 'Pendiente',
+            'processing': 'Procesando',
+            'shipped': 'Enviado',
+            'delivered': 'Entregado',
+            'cancelled': 'Cancelado'
+        };
+
+        const statusColor = statusColors[order.status] || 'bg-gray-100 text-gray-800';
+        const statusText = statusTexts[order.status] || order.status;
+
+        // ✅ Formatear precio
+        const total = new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0
+        }).format(order.totals?.total);
+
+        return `
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <!-- Header del pedido -->
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 class="font-semibold text-lg text-gray-800">
+                            Pedido #${order.orderNumber || order._id.slice(-6)}
+                        </h3>
+                        <p class="text-sm text-gray-500">${orderDate}</p>
+                    </div>
+                    <span class="${statusColor} px-3 py-1 rounded-full text-xs font-semibold">
+                        ${statusText}
+                    </span>
+                </div>
+
+                <!-- Productos -->
+                <div class="border-t border-b border-gray-200 py-4 mb-4">
+                    ${order.products.slice(0, 2).map(item => `
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
+                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-800">${item.name}</p>
+                                <p class="text-xs text-gray-500">Cantidad: ${item.quantity}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                    ${order.products.length > 2 ? `
+                        <p class="text-xs text-gray-500 mt-2">
+                            + ${order.products.length - 2} producto(s) más
+                        </p>
+                    ` : ''}
+                </div>
+
+                <!-- Footer -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-gray-500">Total</p>
+                        <p class="text-lg font-bold text-gray-800">${total}</p>
+                    </div>
+                    <button onclick="viewOrderDetails('${order._id}')" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                        Ver Detalles
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // ========================================
+    // 5. ACTUALIZAR ESTADÍSTICAS
+    // ========================================
+    function updateStatistics(orders) {
+        // ✅ Calcular estadísticas
+        const totalOrders = orders.length;
+        const pendingOrders = orders.filter(o => o.status === 'pending' || o.status === 'processing').length;
+        const completedOrders = orders.filter(o => o.status === 'delivered').length;
+        const totalSpent = orders.reduce((sum, order) => sum + order.totals?.total, 0);
+
+        // ✅ Actualizar en el DOM
+        const totalOrdersEl = document.getElementById('total-orders');
+        const pendingOrdersEl = document.getElementById('pending-orders');
+        const completedOrdersEl = document.getElementById('completed-orders');
+        const totalSpentEl = document.getElementById('total-spent');
+
+        if (totalOrdersEl) totalOrdersEl.textContent = totalOrders;
+        if (pendingOrdersEl) pendingOrdersEl.textContent = pendingOrders;
+        if (completedOrdersEl) completedOrdersEl.textContent = completedOrders;
+        
+        if (totalSpentEl) {
+            totalSpentEl.textContent = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(totalSpent);
+        }
+
+        console.log('📊 Estadísticas actualizadas:', {
+            total: totalOrders,
+            pending: pendingOrders,
+            completed: completedOrders,
+            spent: totalSpent
+        });
+    }
+
+    // ========================================
+    // 6. VER DETALLES DE PEDIDO
+    // ========================================
+    async function viewOrderDetails(orderId) {
+        try {
+            console.log('🔍 Cargando detalles del pedido:', orderId);
+
+            // ✅ IMPORTANTE: Obtener el token correctamente
+            const token = authAPI.getToken();
+
+            const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo cargar el pedido');
+            }
+
+            const data = await response.json();
+            const order = data.data || data.order;
+
+            // ✅ Mostrar modal con los detalles
+            showOrderDetailsModal(order);
+
+        } catch (error) {
+            console.error('❌ Error:', error);
+            showErrorMessage('No se pudieron cargar los detalles del pedido');
+        }
+    }
+
+    // ========================================
+    // 7. MOSTRAR MODAL DE DETALLES
+    // ========================================
+    function showOrderDetailsModal(order) {
+        // ✅ Crear modal dinámicamente
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">
+                            Pedido #${order.orderNumber || order._id.slice(-6)}
+                        </h2>
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Información del pedido -->
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-2">Estado</h3>
+                            <p class="text-gray-600">${order.status}</p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-2">Productos</h3>
+                            <div class="space-y-2">
+                                ${order.products.map(item => `
+                                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                        <div>
+                                            <p class="font-medium">${item.name}</p>
+                                            <p class="text-sm text-gray-500">Cantidad: ${item.quantity}</p>
+                                        </div>
+                                        <p class="font-semibold">
+                                            ${new Intl.NumberFormat('es-CO', {
+                                                style: 'currency',
+                                                currency: 'COP',
+                                                minimumFractionDigits: 0
+                                            }).format(item.price * item.quantity)}
+                                        </p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-2">Dirección de Envío</h3>
+                            <p class="text-gray-600">
+                                ${order.shippingAddress.street}<br>
+                                ${order.shippingAddress.city}, ${order.shippingAddress.state}<br>
+                                ${order.shippingAddress.zipCode}, ${order.shippingAddress.country}
+                            </p>
+                        </div>
+
+                        <div class="border-t pt-4">
+                            <div class="flex justify-between items-center text-lg font-bold">
+                                <span>Total</span>
+                                <span class="text-blue-600">
+                                    ${new Intl.NumberFormat('es-CO', {
+                                        style: 'currency',
+                                        currency: 'COP',
+                                        minimumFractionDigits: 0
+                                    }).format(order.totals?.total)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+    }
+
+    // ========================================
+    // 8. MOSTRAR MENSAJE DE ERROR
+    // ========================================
+    function showErrorMessage(message) {
+        const container = document.getElementById('orders-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-12">
+                    <div class="text-red-500 mb-4">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <p class="text-gray-700">${message}</p>
+                    <button onclick="loadOrders()" 
+                            class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Reintentar
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    // ========================================
+    // 9. INICIALIZACIÓN
+    // ========================================
+    // ✅ Esperar a que authAPI esté completamente cargado
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initializePage, 500);
+        });
+    } else {
+        setTimeout(initializePage, 500);
+    }
+
+    console.log('✅ Página de pedidos inicializada');
+</script>
+
+
+</body>
+</html>

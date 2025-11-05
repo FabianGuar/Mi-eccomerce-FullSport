@@ -58,3 +58,44 @@ totalOrders
 totalSpent
 : 
 0
+
+
+"id": "690b9481146dd6d8ead8d286"
+
+68f01415c4836ba4dd352fe9
+
+68f01479c4836ba4dd352fed
+
+
+{"success":true,"message":"Login exitoso","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjkyNjYzMzkwNDQyMmUyMzgzMjUwMyIsImVtYWlsIjoiZ3Vhcm5lbHNvbkBnbWFpbC5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3NjE3NzA4NTIsImV4cCI6MTc2NDM2Mjg1Mn0.1gf80JLt4T9-gS32dPhHEXtVUCmuzFFRGgi2SRUKjNQ","user":{"id":"68f926633904422e23832503","firstName":"nelson fabian","lastName":"diaz guar","fullName":"nelson fabian diaz guar","email":"guarnelson@gmail.com","role":"customer","phone":"3112828585","address":{"country":"Colombia"},"isActive":true,"isEmailVerified":false,"customerLevel":"bronze","totalOrders":0,"totalSpent":0,"formattedTotalSpent":"$ 0","loyaltyPoints":0,"createdAt":"2025-10-22T18:45:55.794Z"}}
+
+
+
+
+
+
+{
+    "success": true,
+    "message": "Usuario registrado exitosamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGI4Y2E4MTQ2ZGQ2ZDhlYWQ4ZDI2NCIsImVtYWlsIjoiZ3VhckBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjIzNjQ1ODUsImV4cCI6MTc2NDk1NjU4NX0.usnlPpWTHTb8qRg47nvtHP4H1V_8b84n6pOwuGERehM",
+    "user": {
+        "id": "690b8ca8146dd6d8ead8d264",
+        "firstName": "Nelson",
+        "lastName": "Diaz",
+        "fullName": "Nelson Diaz",
+        "email": "guar@gmail.com",
+        "role": "admin",
+        "phone": "3112828585",
+        "address": {
+            "country": "Colombia"
+        },
+        "isActive": true,
+        "isEmailVerified": false,
+        "customerLevel": "bronze",
+        "totalOrders": 0,
+        "totalSpent": 0,
+        "formattedTotalSpent": "$ 0",
+        "loyaltyPoints": 0,
+        "createdAt": "2025-11-05T17:43:04.737Z"
+    }
+}
